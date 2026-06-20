@@ -35,7 +35,7 @@ async function startServer() {
   });
 
   // API constraints
-  app.post("/api/gemini/chat", chatLimiter, async (req, res) => {
+  app.post("/api/openai/chat", chatLimiter, async (req, res) => {
     try {
       const { message, history } = req.body;
 

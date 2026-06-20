@@ -129,7 +129,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
     try {
       const initialPrompt = `I am looking for a ${completeData.type} in ${completeData.location} with a budget of ${completeData.budget}. Preferred land size is ${completeData.size}. Key features required: ${completeData.features}. Target utilization timeline: ${timeline}.`;
       
-      const res = await fetch('/api/gemini/chat', {
+      const res = await fetch('/api/openai/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -180,7 +180,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/gemini/chat', {
+      const res = await fetch('/api/openai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -227,7 +227,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/gemini/chat', {
+      const res = await fetch('/api/openai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -388,7 +388,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
                     <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 text-center mb-10">
                       What are you looking for today?
                     </motion.h2>
-                    <div className="flex flex-wrap items-center justify-center gap-4 w-max max-w-3xl mx-auto">
+                    <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-3xl mx-auto">
                       {["Residential Land", "Farm Land", "Investment Land", "Roadside Land", "Premium Land"].map((s, i) => (
                         <motion.button
                           key={i}
@@ -451,7 +451,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
                     <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 text-center mb-10">
                       What is your budget?
                     </motion.h2>
-                    <div className="flex flex-wrap items-center justify-center gap-4 w-max max-w-3xl mx-auto">
+                    <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-3xl mx-auto">
                       {["Under ₹25L", "₹25L – ₹50L", "₹50L – ₹1Cr", "Above ₹1Cr"].map((s, i) => (
                         <motion.button
                           key={i}
@@ -475,7 +475,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
                     <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 text-center mb-10">
                       What is your preferred plot size or area?
                     </motion.h2>
-                    <div className="flex flex-wrap items-center justify-center gap-4 w-max max-w-3xl mx-auto">
+                    <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-3xl mx-auto">
                       {["Under 2,000 Sq Ft", "2,000 – 5,000 Sq Ft", "5,000 – 10,000 Sq Ft", "10,000 Sq Ft – 1 Acre", "Above 1 Acre"].map((s, i) => (
                         <motion.button
                           key={i}
@@ -499,7 +499,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
                     <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 text-center mb-10">
                       Which key features or approvals do you require?
                     </motion.h2>
-                    <div className="flex flex-wrap items-center justify-center gap-4 w-max max-w-3xl mx-auto">
+                    <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-3xl mx-auto">
                       {["PMRDA Approved", "Gated Community", "Road-Touch Access", "Scenic Lake/Valley View", "Clear Title / Ready Possession"].map((s, i) => (
                         <motion.button
                           key={i}
@@ -523,7 +523,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
                     <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 text-center mb-10">
                       What is your timeline for acquisition or construction?
                     </motion.h2>
-                    <div className="flex flex-wrap items-center justify-center gap-4 w-max max-w-3xl mx-auto">
+                    <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-3xl mx-auto">
                       {["Immediate (Within 3 Months)", "Short-Term (3 – 12 Months)", "Medium-Term (1 – 3 Years)", "Long-Term / Investment Holding"].map((s, i) => (
                         <motion.button
                           key={i}
