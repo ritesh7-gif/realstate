@@ -2,7 +2,8 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
-
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 dotenv.config();
 
 const PORT = 3000;
@@ -11,10 +12,42 @@ async function startServer() {
   const app = express();
   app.use(express.json());
 
+  // Security Middleware
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:", "blob:", "https:"],
+        connectSrc: ["'self'", "wss:", "https:"],
+      },
+    },
+  }));
+
+  const chatLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 50, // Limit each IP to 50 requests per windowMs
+    message: { error: "Too many requests from this IP, please try again after 15 minutes" },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
   // API constraints
-  app.post("/api/gemini/chat", async (req, res) => {
+  app.post("/api/gemini/chat", chatLimiter, async (req, res) => {
     try {
       const { message, history } = req.body;
+
+      // Input Validation
+      if (!message || typeof message !== 'string') {
+        res.status(400).json({ error: "Invalid message format. 'message' must be a string." });
+        return;
+      }
+      if (message.length > 2000) {
+        res.status(400).json({ error: "Message too long. Please keep it under 2000 characters." });
+        return;
+      }
       
       const apiKey = process.env.OPENAI_API_KEY;
       const model = process.env.OPENAI_CHAT_MODEL || "gpt-4o-mini";
