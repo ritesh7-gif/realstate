@@ -158,7 +158,7 @@ export async function fetchOpenAIChat(message: string, history: any[]) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": \`Bearer \${apiKey}\`
+      "Authorization": `Bearer ${apiKey}`
     },
     body: JSON.stringify({
       model,
@@ -171,7 +171,7 @@ export async function fetchOpenAIChat(message: string, history: any[]) {
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(\`OpenAI API error: \${response.status} - \${errorText}\`);
+    throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
   }
 
   const responseData = await response.json();
