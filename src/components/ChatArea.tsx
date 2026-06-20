@@ -5,6 +5,7 @@ import Markdown from 'react-markdown';
 import { ChatMessage, Property } from '../types';
 import PropertyCard from './PropertyCard';
 import PropertyDetails from './PropertyDetails';
+import { fetchOpenAIChat } from '../utils/openai';
 
 interface ChatAreaProps {
   messages: ChatMessage[];
@@ -129,19 +130,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
     try {
       const initialPrompt = `I am looking for a ${completeData.type} in ${completeData.location} with a budget of ${completeData.budget}. Preferred land size is ${completeData.size}. Key features required: ${completeData.features}. Target utilization timeline: ${timeline}.`;
       
-      const res = await fetch('/api/openai/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: initialPrompt,
-          history: [] // empty history
-        })
-      });
-
-      if (!res.ok) throw new Error('API Error');
-      const data = await res.json();
+      const data = await fetchOpenAIChat(initialPrompt, []);
       
       if (data.functionCall && data.functionCall.name === 'recommendProperties') {
           setHasShownProperties(true);
@@ -180,15 +169,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/openai/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          message: newText,
-          history: historyToKeep 
-        })
-      });
-      const data = await res.json();
+      const data = await fetchOpenAIChat(newText, historyToKeep);
       
       const aiMessage: ChatMessage = {
          id: (Date.now() + 1).toString(),
@@ -227,15 +208,7 @@ export default function ChatArea({ messages, setMessages, onExploreAll, userName
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/openai/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          message: text,
-          history: messages 
-        })
-      });
-      const data = await res.json();
+      const data = await fetchOpenAIChat(text, messages);
       
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
